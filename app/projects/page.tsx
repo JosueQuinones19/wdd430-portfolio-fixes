@@ -1,7 +1,14 @@
-import ProjectList from '@/components/ProjectList';
+import type { Metadata } from 'next';
+
+// Allow blocking route for un-cached fetch
+export const instant = false;
 
 async function getProjectsData() {
-  const res = await fetch('http://localhost:3001/api/projects', { cache: 'no-store' });
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:3000';
+    
+  const res = await fetch(`${baseUrl}/api/projects`, { cache: 'no-store' });
   return res.json();
 }
 
@@ -9,9 +16,9 @@ export default async function ProjectsOverview() {
   const projects = await getProjectsData();
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold text-white mb-4">Projects Overview</h2>
-      <ProjectList projects={projects} />
-    </main>
+    <div className="p-8 text-white">
+      <h1 className="text-3xl font-bold mb-6">Projects Overview</h1>
+      {/* Render your projects here */}
+    </div>
   );
 }
