@@ -1,7 +1,7 @@
 import ProjectList from '@/components/ProjectList';
 
 async function getOpenSourceProjects() {
-  const res = await fetch('http://localhost:3001/api/projects?type=opensource', { cache: 'no-store' });
+  const res = await fetch('http://localhost:3000/api/projects?type=opensource', { cache: 'no-store' });
   return res.json();
 }
 

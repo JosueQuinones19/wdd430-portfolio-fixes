@@ -1,7 +1,7 @@
 import ProjectList from '@/components/ProjectList';
 
 async function getSchoolProjects() {
-  const res = await fetch('http://localhost:3001/api/projects?type=school', { cache: 'no-store' });
+  const res = await fetch('http://localhost:3000/api/projects?type=school', { cache: 'no-store' });
   return res.json();
 }
 
