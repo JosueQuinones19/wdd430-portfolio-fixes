@@ -1,23 +1,12 @@
 import { Suspense } from 'react';
 import { connection } from 'next/server';
+import { getProjects } from '@/lib/projects-db';
 import ProjectList from '@/components/ProjectList';
-
-export const instant = false;
-
-async function getSchoolProjects() {
-  const res = await fetch('http://localhost:3000/api/projects?type=school', {
-    cache: 'no-store',
-  });
-  return res.json();
-}
 
 async function SchoolProjectList() {
   await connection();
 
-  // Temporarily in your data fetch — remove after testing
-  await new Promise((res) => setTimeout(res, 2000));
-
-  const projects = await getSchoolProjects();
+  const projects = await getProjects('school');
 
   return <ProjectList projects={projects} />;
 }

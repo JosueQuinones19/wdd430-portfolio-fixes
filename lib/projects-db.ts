@@ -5,6 +5,7 @@ export interface Project {
   title: string;
   description: string;
   type?: string;
+  technologies: string[] | string;
   [key: string]: unknown;
 }
 
