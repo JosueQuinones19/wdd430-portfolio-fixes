@@ -29,3 +29,5 @@ export async function getProjectById(id: number): Promise<Project | null> {
   `;
   return rows[0] ?? null;
 }
+// Temporarily in your data fetch — remove after testing
+await new Promise((res) => setTimeout(res, 200));

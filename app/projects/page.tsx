@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
+import { connection } from 'next/server';
 import { getProjects } from '@/lib/projects-db';
 
 export const metadata: Metadata = {
@@ -7,7 +8,13 @@ export const metadata: Metadata = {
 };
 
 async function ProjectsContent() {
+  await connection();
+
   const projects = await getProjects();
+
+  if (projects.length === 0) {
+    return <p className="text-sm opacity-75">No projects found in the database.</p>;
+  }
 
   return (
     <div className="space-y-4">
