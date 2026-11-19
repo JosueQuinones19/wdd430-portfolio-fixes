@@ -8,11 +8,10 @@ export interface Project {
   [key: string]: unknown;
 }
 
-export const PROJECTS_PER_PAGE = 6; // Adjust page size as needed
+export const PROJECTS_PER_PAGE = 6;
 
 export function sanitizeSearchQuery(rawQuery?: string): string {
   if (!rawQuery) return '';
-  // Trim, cap length, and strip control/null characters
   return rawQuery.replace(/[\x00-\x1F\x7F]/g, '').trim().slice(0, 100);
 }
 
@@ -24,13 +23,39 @@ export function sanitizePageNumber(rawPage?: string): number {
   return parsed;
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(type?: string | null): Promise<Project[]> {
+  if (type && type.trim() !== '') {
+    const cleanType = type.trim();
+    const { rows } = await sql<Project>`
+      SELECT *
+      FROM projects
+      WHERE type = ${cleanType}
+      ORDER BY id ASC
+    `;
+    return rows;
+  }
+
   const { rows } = await sql<Project>`
     SELECT *
     FROM projects
     ORDER BY id ASC
   `;
   return rows;
+}
+
+export async function getProjectById(id: number): Promise<Project | null> {
+  if (!Number.isInteger(id) || id < 1) {
+    return null;
+  }
+
+  const { rows } = await sql<Project>`
+    SELECT *
+    FROM projects
+    WHERE id = ${id}
+    LIMIT 1
+  `;
+
+  return rows[0] ?? null;
 }
 
 export async function fetchFilteredProjects(
