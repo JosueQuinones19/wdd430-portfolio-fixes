@@ -1,14 +1,11 @@
+import { connection } from 'next/server';
+import { getProjects } from '@/lib/projects-db';
 import ProjectList from '@/components/ProjectList';
 
-export const instant = false;
+export default async function OpenSourceProjects() {
+  await connection();
 
-async function getSchoolProjects() {
-  const res = await fetch('http://localhost:3000/api/projects?type=school', { cache: 'no-store' });
-  return res.json();
-}
-
-export default async function SchoolProjects() {
-  const projects = await getSchoolProjects();
+  const projects = await getProjects('opensource');
 
   return (
     <div>
